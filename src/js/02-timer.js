@@ -27,10 +27,13 @@ flatpickr(datetimePicker, options);
 startButton.addEventListener("click", startTimer);
 
 function startTimer() {
-  const selectedDate = flatpickr.parseDate(datetimePicker.value);
-
+ const [year, month, day, hours, minutes] =
+    datetimePicker.value.split(/-|:|\s/); // Splitting the date string
+  const selectedDate = Date.parse(`
+    ${year}-${month}-${day} ${hours}:${minutes}`
+  );
   if (selectedDate) {
-    const countdown = selectedDate.getTime() - Date.now();
+    const countdown = selectedDate - Date.now();
     if (countdown > 0) {
       disableInputs();
       countdownTimer(countdown);
